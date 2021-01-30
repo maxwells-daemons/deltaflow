@@ -4,6 +4,9 @@
 
 # DeltaFlow
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Q2wiE_ros0-WQtJMGW0w_Hbl1PHau0hV?usp=sharing)
+![License shield](https://img.shields.io/github/license/maxwells-daemons/deltaflow)
+
 DeltaFlow is a GPU-accelerated differentiable fluid simulator written in JAX.
 
 By taking derivatives through the entire simulation, you can optimize simulation inputs with gradient descent. 
@@ -16,8 +19,6 @@ and since the environment is fully differentiable you wouldn't need reinforcemen
 
 Also, it's fast. On a recent GPU, DeltaFlow can run a 4K simulation at 40 FPS. 
 Smaller simulations often achieve hundreds of frames per second, even when computing gradients.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Q2wiE_ros0-WQtJMGW0w_Hbl1PHau0hV?usp=sharing)
 
 ## Usage
 
