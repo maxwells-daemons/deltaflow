@@ -1,6 +1,0 @@
-jax
-jaxlib
-numpy
-tqdm
-pillow
-ffmpeg-python
