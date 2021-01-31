@@ -5,6 +5,7 @@
 # DeltaFlow
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Q2wiE_ros0-WQtJMGW0w_Hbl1PHau0hV?usp=sharing)
+[![Documentation Status](https://readthedocs.org/projects/deltaflow/badge/?version=latest)](https://deltaflow.readthedocs.io/en/latest/?badge=latest)
 ![License shield](https://img.shields.io/github/license/maxwells-daemons/deltaflow)
 
 DeltaFlow is a GPU-accelerated differentiable fluid simulator written in JAX.
@@ -29,7 +30,7 @@ For detailed usage examples, see the notebooks under `examples/`.
 
 ## Documentation
 
-TODO
+Documentation is hosted on [Read the Docs](https://deltaflow.readthedocs.io/en/latest/index.html).
 
 ## Installation
 
