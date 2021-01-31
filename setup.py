@@ -19,4 +19,5 @@ setup(
         "pillow",
         "ffmpeg-python",
     ],
+    extras_require={"docs": ["sphinx", "furo"]},
 )

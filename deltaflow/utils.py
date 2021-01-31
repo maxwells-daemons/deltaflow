@@ -1,5 +1,5 @@
 """
-Various utilities for visualization, etc.
+Various handy visualization utilities.
 
 All images are expected to have values from 0 to 1.
 """
@@ -28,10 +28,10 @@ def draw_frame(color: np.ndarray, velocity: Optional[np.ndarray] = None, axes=No
     Parameters
     ----------
     color
-        A color field. Shape: [y, x, 3].
+        A color field. *Shape: [y, x, 3]*.
     velocity
-        A velocity field. Shape: [y, x, 2]. If provided, draws and returns a quiver
-        plot; otherwise, just draws and returns an image.
+        A velocity field. If provided, draws and returns a quiver plot; otherwise,
+        just draws and returns an image. *Shape: [y, x, 2]*.
     axes
         If provided, uses these pyplot axes to draw the plots.
         Otherwise, create a new figure.
@@ -61,10 +61,10 @@ def animate_frames(
     Parameters
     ----------
     color
-        A stack of color field frames. Shape: [timesteps, y, x, 3].
+        A stack of color field frames. *Shape: [timesteps, y, x, 3]*.
     velocity
-        A stack of velocity field frames. Shape: [timesteps, y, x, 2].
-        If provided, draws a quiver plot on each frame.
+        A stack of velocity field frames. If provided, draws a quiver plot on each
+        frame. *Shape: [timesteps, y, x, 2]*.
     interval
         Milliseconds between consecutive frames of the animation.
     """
@@ -168,7 +168,7 @@ def write_video(filepath: str, images: np.ndarray, **kwargs) -> None:
     filepath
         The filepath to save the video to.
     images
-        A stack of color frames. Shape: [timesteps, y, x, 3].
+        A stack of color frames. *Shape: [timesteps, y, x, 3].*
     kwargs
         See `deltaflow.utils._VideoWriter` for all optional arguments.
     """

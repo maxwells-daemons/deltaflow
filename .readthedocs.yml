@@ -1,0 +1,13 @@
+# See: https://github.com/iamishalkin/cyrtd
+
+version: 2
+
+python:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
+        - docs
+
+sphinx:
+  configuration: docs/conf.py

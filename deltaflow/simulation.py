@@ -1,7 +1,7 @@
 """
-An API for differentiable fluid simulation.
+Functions for differentiable fluid simulation.
 
-Units are normalized to grid squares per unit time.
+All units are given in grid squares per unit time.
 """
 
 from functools import partial
@@ -51,7 +51,7 @@ def _get_predecessor_coordinates(velocity: jnp.ndarray, delta_t: float) -> jnp.n
     Parameters
     ----------
     velocity
-        The fluid velocity field. Shape: [y, x, y/x].
+        The fluid velocity field. *Shape: [y, x, y/x].*
     delta_t
         The time elapsed in each timestep.
 
@@ -59,7 +59,7 @@ def _get_predecessor_coordinates(velocity: jnp.ndarray, delta_t: float) -> jnp.n
     -------
     jnp.ndarray
         For each grid square, the (fractional) coordinates of the grid square that
-        would move to its center at the next timestep. Shape: [y/x, y, x].
+        would move to its center at the next timestep. *Shape: [y/x, y, x].*
     """
     # Compile-time: precompute coordinate grid
     grid_coords = np.mgrid[: velocity.shape[0], : velocity.shape[1]]
@@ -76,9 +76,9 @@ def _advect(field: jnp.ndarray, predecessor_coords: jnp.ndarray) -> jnp.ndarray:
     Parameters
     ----------
     field
-        The vector field to transport. Shape: [y, x, any].
+        The vector field to transport. *Shape: [y, x, any].*
     predecessor_coords
-        The predecessor coordinates computed from the velocity. Shape: [y/x, y, x].
+        The predecessor coordinates computed from the velocity. *Shape: [y/x, y, x].*
 
     Returns
     -------
@@ -95,12 +95,12 @@ def _divergence_2d(field: jnp.ndarray) -> jnp.ndarray:
     Parameters
     ----------
     field
-        Any 2D vector field. Shape: [y, x, 2].
+        Any 2D vector field. *Shape: [y, x, 2].*
 
     Returns
     -------
     jnp.ndarray
-        The divergence of `field` as a scalar field. Shape: [y, x].
+        The divergence of `field` as a scalar field. *Shape: [y, x].*
     """
     return jnp.gradient(field[:, :, 0], axis=0) + jnp.gradient(field[:, :, 1], axis=1)
 
@@ -117,11 +117,11 @@ def _compute_pressure(
     ----------
     advected_velocity
         The fluid's velocity field for this frame, advected but without
-        pressure correction. Shape: [y, x, 2].
+        pressure correction. *Shape: [y, x, 2].*
     pressure
         Last frame's pressure field, used as an initial guess for the pressure solver.
         If no such estimate is available (e.g. for the first frame), a zero field may
-        be passed. Shape: [y, x].
+        be passed. *Shape: [y, x].*
     pressure_iterations
         The number of iterations used to compute pressure.
         Must be static during JIT tracing.
@@ -129,7 +129,7 @@ def _compute_pressure(
     Returns
     -------
     jnp.ndarray
-        The estimated pressure field for the fluid at this frame. Shape: [y, x].
+        The estimated pressure field for the fluid at this frame. *Shape: [y, x].*
     """
     # Compile-time: precompute surround kernel
     surround_kernel = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]])
@@ -155,7 +155,7 @@ def _diffuse(field: jnp.ndarray, diffusion_coeff: float, delta_t: float) -> jnp.
     Parameters
     ----------
     field
-        The vector field to diffuse. Shape: [y, x, any].
+        The vector field to diffuse. *Shape: [y, x, any].*
     diffusion_coeff
         A coefficient determining the amount of diffusion at each frame.
         Must be static during JIT tracing.
@@ -202,13 +202,13 @@ def step(
     Parameters
     ----------
     color
-        The RGB color field of the fluid at the last frame. Shape: [y, x, 3].
+        The RGB color field of the fluid at the last frame. *Shape: [y, x, 3].*
     velocity
-        The velocity field of the fluid at the last frame. Shape: [y, x, y/x].
+        The velocity field of the fluid at the last frame. *Shape: [y, x, y/x].*
     force
-        A static force field to apply at this frame. Shape: [y, x, y/x].
+        A static force field to apply at this frame. *Shape: [y, x, y/x].*
     pressure
-        The pressure field of the fluid at the last frame. Shape: [y, x].
+        The pressure field of the fluid at the last frame. *Shape: [y, x].*
         If this was the first frame, zeroes may be passed instead.
     config
         The simulation's physical configuration.
@@ -218,11 +218,11 @@ def step(
     Returns
     -------
     color : jnp.ndarray
-        The RGB color field of the fluid at the next frame. Shape: [y, x, 3].
+        The RGB color field of the fluid at the next frame. *Shape: [y, x, 3].*
     velocity : jnp.ndarray
-        The velocity field of the fluid at the next frame. Shape: [y, x, y/x].
+        The velocity field of the fluid at the next frame. *Shape: [y, x, y/x].*
     pressure : jnp.ndarray
-        The pressure field of the fluid at the next frame. Shape: [y, x].
+        The pressure field of the fluid at the next frame. *Shape: [y, x].*
     """
     # Advection: fluid particles move to their new locations
     predecessor_coords = _get_predecessor_coordinates(velocity, config.delta_t)
@@ -270,12 +270,12 @@ def simulate(
     timesteps
         The number of timesteps to run the simulation for.
     color
-        The RGB color field of the fluid at the first frame. Shape: [y, x, 3].
+        The RGB color field of the fluid at the first frame. *Shape: [y, x, 3].*
     velocity
-        The velocity field of the fluid at the first frame. Shape: [y, x, y/x].
+        The velocity field of the fluid at the first frame. *Shape: [y, x, y/x].*
         If None (default), initialize a zero velocity field.
     force
-        A static force field to apply at each frame. Shape: [y, x, y/x].
+        A static force field to apply at each frame. *Shape: [y, x, y/x].*
         If None (default), initialize a zero force field.
     config
         The simulation's physical configuration.
@@ -289,11 +289,11 @@ def simulate(
     Returns
     -------
     color : jnp.ndarray
-        If `return_frames` is False: the final color field, with shape [y, x, 3].
-        Otherwise: each frame's color field, with shape [timesteps, y, x, 3].
+        If `return_frames` is False: the final color field, with shape *[y, x, 3].*
+        Otherwise: each frame's color field, with shape *[timesteps, y, x, 3].*
     velocity : jnp.ndarray
-        If `return_frames` is False: the final velocity field, with shape [y, x, 2].
-        Otherwise: each frame's velocity field, with shape [timesteps, y, x, 2].
+        If `return_frames` is False: the final velocity field, with shape *[y, x, 2].*
+        Otherwise: each frame's velocity field, with shape *[timesteps, y, x, 2].*
     """
 
     # Move `color` to the default device if it doesn't have one
